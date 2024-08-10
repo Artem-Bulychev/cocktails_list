@@ -23,11 +23,11 @@ const props = defineProps({
 
 .root
     width: calc( (100% - 76px) / 3)
-    padding-right: 38px
-    padding-bottom: 20px
+    margin-right: 38px
+    margin-bottom: 20px
 
     &:nth-child(3n + 3)
-        padding-right: 0px
+        margin-right: 0px
 
 .pic
     width: 120px
@@ -38,6 +38,10 @@ const props = defineProps({
     margin: 0 auto
 
 .name
+    width: 100%
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
     padding-top: 15px
     letter-spacing: 0.1em
 
