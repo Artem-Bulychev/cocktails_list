@@ -1,85 +1,70 @@
 <script setup>
-import axios from 'axios';
-import { ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import AppLayout from '../components/AppLayout.vue';
-import { COCKTAIL_RANDOM, INGREDIENT_PIC } from '@/constants';
+import axios from "axios";
+import { ref, computed } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
+import { COCKTAIL_RANDOM, INGREDIENT_PIC } from "@/constants";
+import AppLayout from "../components/AppLayout.vue";
 
 const cocktail = ref(null);
+
 const ingredients = computed(() => {
-    const ingredients = []
+  const ingredients = [];
 
-    for (let i = 1; i <= 15; i++) {
-        if (!cocktail.value[`strIngredient${i}`])  break; 
+  for (let i = 1; i <= 15; i++) {
+    if (!cocktail.value[`strIngredient${i}`]) break;
 
-        const ingredient = {} 
+    const ingredient = cocktail.value[`strIngredient${i}`];
 
-        ingredient.name = cocktail.value[`strIngredient${i}`]
-        ingredient.measure = cocktail.value[`strMeasure${i}`]
+    ingredients.push(ingredient);
+  }
 
-        ingredients.push(ingredient)
-    }
-
-    return ingredients
-
+  return ingredients;
 });
 
-
 async function getCocktail() {
-    const data = await axios.get(COCKTAIL_RANDOM)
-    cocktail.value = data?.data?.drinks[0]
+  const data = await axios.get(COCKTAIL_RANDOM);
+  cocktail.value = data?.data?.drinks[0];
 }
 
-
-getCocktail()
-
+getCocktail();
 </script>
 
 <template>
-    <div v-if="cocktail" class="wrap">
-    <AppLayout :imgUrl="cocktail.strDrinkThumb" :backFunc="goback">
-    <div class="wrapper">
-      <div class="info">
-        <div class="title"> {{ cocktail.strDrink }}</div>
-        <div class="line"></div>
-        <div class="slider">
-            <swiper
-            :slides-per-view="3"
-            :space-between="50"
-            class="swiper"
-            >
-            <swiper-slide
-            v-for="(ingredient, key) in ingredients"
-            :key="key"
-            >
-            <img :src="`${INGREDIENT_PIC}${ingredient.name}.png`" />
-            <div class="name">
-                {{ ingredient }}
-            </div>
-            </swiper-slide>
+  <div v-if="cocktail" class="wrap">
+    <AppLayout :imgUrl="cocktail.strDrinkThumb">
+      <div class="wrapper">
+        <div class="info">
+          <div class="title">{{ cocktail.strDrink }}</div>
+          <div class="line"></div>
+          <div class="slider">
+            <swiper :slides-per-view="3" :space-between="50" class="swiper">
+              <swiper-slide v-for="(ingredient, key) in ingredients" :key="key">
+                <img :src="`${INGREDIENT_PIC}${ingredient}-Small.png`" />
+                <div class="name">
+                  {{ ingredient }}
+                </div>
+              </swiper-slide>
             </swiper>
-        </div>
-        <div class="instructions">
+          </div>
+          <div class="instructions">
             {{ cocktail.strInstructions }}
+          </div>
         </div>
-        </div>
-        </div>
+      </div>
     </AppLayout>
-    </div>
+  </div>
 </template>
 
 <style lang="sass" scoped>
 @import '../assets/styles/main'
 
-.slider 
-    padding: 50px 0
-    
-.swiper 
-    width: 586px
+.slider
+  padding: 50px 0
+
+.swiper
+  width: 586px
 
 .name
-    padding-top: 20px
-
+  padding-top: 20px
 </style>

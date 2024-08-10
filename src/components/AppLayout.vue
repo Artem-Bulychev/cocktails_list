@@ -42,7 +42,7 @@ function goback() {
     <div :style="`background-image: url(${imgUrl})`"class="img"></div>
     <div class="main">
         <div class="btns">
-            <el-button v-if="isBackButtonVisible" type="primary" :icon="Back" circle class="back" @click="goBack"/>
+            <el-button v-if="isBackButtonVisible" type="primary" :icon="Back" circle class="back" @click="goback"/>
             <el-button class="btn">Get random cocktail</el-button>
         </div>
         <el-button class="btn" @click="getForCoctailRandom">Get random cocktail</el-button>
